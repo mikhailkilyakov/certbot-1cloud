@@ -83,7 +83,7 @@ class _1CloudClient(object):
             domain_id = self._load_domain_info(parsed['domain'])['ID']
 
             response = requests.post('https://api.1cloud.ru/dns/recordtxt', json={
-                'DomainId': f"{domain_id}",
+                'DomainId': domain_id,
                 'Name': parsed['subdomain'],
                 'Text': record_value,
                 'TTL': '1'
@@ -93,11 +93,11 @@ class _1CloudClient(object):
         except requests.RequestException as e:
             logger.error('Encountered error adding TXT record: %d %s', e, e)
             raise errors.PluginError(
-                f'Error communicating with 1cloud API: {e}')
+                'Error communicating with 1cloud API: {0}'.format(e))
         except DomainNotFoundError as e:
             logger.error('Encountered error adding TXT record: %d %s', e, e)
             raise errors.PluginError(
-                f'Error communicating with 1cloud API: {e}')
+                'Error communicating with 1cloud API: {0}'.format(e))
 
     def del_txt_record(self, record_name, record_value):
         """
@@ -115,7 +115,7 @@ class _1CloudClient(object):
                     record_id = record['ID']
                     domain_id = domain_info['ID']
                     response = requests.delete(
-                        f'https://api.1cloud.ru/dns/{domain_id}/{record_id}', headers=self._create_headers())
+                        'https://api.1cloud.ru/dns/{0}/{1}'.format(domain_id, record_id), headers=self._create_headers())
                     response.raise_for_status()
                     return
 
@@ -123,19 +123,19 @@ class _1CloudClient(object):
         except requests.RequestException as e:
             logger.error('Encountered error removing TXT record: %d %s', e, e)
             raise errors.PluginError(
-                f'Error communicating with 1cloud API: {e}')
+                'Error communicating with 1cloud API: {0}'.format(e))
         except RecordNotFoundError as e:
             logger.error('Encountered error removing TXT record: %d %s', e, e)
             raise errors.PluginError(
-                f'Error communicating with 1cloud API: {e}')
+                'Error communicating with 1cloud API: {0}'.format(e))
         except DomainNotFoundError as e:
             logger.error('Encountered error removing TXT record: %d %s', e, e)
             raise errors.PluginError(
-                f'Error communicating with 1cloud API: {e}')
+                'Error communicating with 1cloud API: {0}'.format(e))
 
     def _create_headers(self):
         return {
-            'Authorization': f'Bearer {self._token}'
+            'Authorization': 'Bearer {0}'.format(self._token)
         }
 
     @classmethod

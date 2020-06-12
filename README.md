@@ -20,10 +20,35 @@ DNS challenges (dns-01) for domains managed by the nameservers of [1cloud.ru](ht
    sudo chmod 0600 /etc/letsencrypt/1cloud.ini
    ```
 
+## Installation with certbot-auto
+
+WARNING: do this on your own risk, certbot-auto currently [doesn't support plugins](https://certbot.eff.org/docs/using.html#dns-plugins)
+
+1. Make sure you have installed certbot-auto
+2. Dive into certbot-auto venv using (as a root)
+   ```
+   source /opt/eff.org/certbot/venv/bin/activate
+   ```
+3. Clone or download this repository
+4. Install using pip (from venv)
+   ```
+   pip install .
+   ```
+5. Configure credentials at /etc/letsencrypt/1cloud.ini and set file rights to 0600
+   ```
+   sudo <your editor> /etc/letsencrypt/1cloud.ini
+   sudo chmod 0600 /etc/letsencrypt/1cloud.ini
+   ```
+
 ## Usage
 Use authenticator with certbot:
 ```
 sudo certbot certonly -a certbot-1cloud:dns -d example.com -d *.example.com
+```
+
+Or with certbot-auto:
+```
+sudo certbot-auto certonly -a certbot-1cloud:dns -d example.com -d *.example.com
 ```
 
 ## Command Line Options
